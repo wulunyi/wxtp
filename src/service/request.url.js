@@ -2,7 +2,8 @@ const ENV = 'pro';
 const BASEURL_PREFIX = {
   server1: {
     pro: 'a',
-    dev: 'http://139.199.94.238'
+    dev: 'http://139.199.94.238:7002',
+    local: 'http://127.0.0.1:7001'
   }
 };
 
@@ -13,6 +14,6 @@ function createUrl(server, pathname, env = ENV) {
 
 export default {
   get login() {
-    return createUrl('server1', 'login', 'dev');
+    return createUrl('server1', 'api/user/userLogin', 'dev');
   }
 };

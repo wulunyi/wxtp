@@ -7,7 +7,7 @@ import urlConfig from './request.url';
 export function login(code) {
   return {
     url: urlConfig.login,
-    method: 'POST',
+    method: 'GET',
     data: {
       code
     }
