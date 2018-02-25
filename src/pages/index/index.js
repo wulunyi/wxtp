@@ -2,6 +2,7 @@ import wepy from 'wepy';
 import deepClone from 'clone';
 import pageBaseMixin from '../../mixins/page-base-mixin.js';
 import initData from './data.js';
+import {authGet} from '@jt/wepy-authget';
 
 export default class Index extends wepy.page {
   config = {
@@ -20,4 +21,16 @@ export default class Index extends wepy.page {
   mixins = [pageBaseMixin];
 
   data = deepClone(initData);
+
+  onLoad(params, data) {
+    authGet('getUserInfo', (err, userInfo) => {
+      debugger;
+
+      if (err) {
+        return console.log('获取联系人失败');
+      }
+
+      debugger;
+    });
+  }
 }

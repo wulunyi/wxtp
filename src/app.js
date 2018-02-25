@@ -66,7 +66,7 @@ export default class extends wepy.app {
   }
 
   onLaunch({path, query, scene}) {
-    this.preLogin();
+    // this.preLogin();
   }
 
   async checkSession() {
