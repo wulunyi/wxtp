@@ -16,6 +16,7 @@ module.exports = {
   },
   resolve: {
     alias: {
+      service: path.join(__dirname, 'src/service')
       // app: path.join(__dirname, 'src/app'),
     },
     aliasFields: ['wepy', 'weapp'],
