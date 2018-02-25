@@ -1,0 +1,8 @@
+<style lang="scss" src="./index.scss">
+</style>
+
+<template lang="wxml" src="./index.wxml">
+</template>
+
+<script lang="babel" src="./index.js">
+</script>
