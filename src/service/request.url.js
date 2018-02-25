@@ -2,7 +2,7 @@ const ENV = 'pro';
 const BASEURL_PREFIX = {
   server1: {
     pro: 'a',
-    dev: 'b'
+    dev: 'http://139.199.94.238'
   }
 };
 

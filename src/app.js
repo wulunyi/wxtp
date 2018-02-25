@@ -4,7 +4,6 @@ import 'promise-polyfill';
 import initGlobalData from './globaldata.js';
 import {judgeWxReq} from './service/request';
 import {judge} from '@jt/promise-operators';
-// import {isString} from 'lodash';
 
 export default class extends wepy.app {
   config = {
@@ -37,6 +36,10 @@ export default class extends wepy.app {
 
   globalData = initGlobalData;
 
+  loginCount = 0;
+
+  loginRetryCount = 0;
+
   constructor () {
     super();
     this.use('requestfix');
@@ -63,7 +66,7 @@ export default class extends wepy.app {
   }
 
   onLaunch({path, query, scene}) {
-    this.afterLogin();
+    this.request();
   }
 
   async checkSession() {
@@ -90,10 +93,34 @@ export default class extends wepy.app {
         }));
 
       await judgeWxReq('login', code);
-      console.log(code);
+
+      return true;
     } catch (error) {
       console.log(error);
-      // 登录失败
+      console.log('重试登录次数', (this.loginRetryCount++));
+      return await this.loginConfirm();
+    } finally {
+      console.log('登录调用总次数', (++this.loginCount));
+      // 清除登录 Promise 的引用
+      this.loginPromise = null;
+    }
+  }
+
+  async loginConfirm() {
+    try {
+      const {confirm} = await wepy.showModal({
+        title: '提示',
+        content: '登录异常是否重试'
+      }).then(judge(res => res.errMsg === 'showModal:ok'));
+
+      if (confirm) {
+        return this.login();
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   }
 
@@ -104,6 +131,16 @@ export default class extends wepy.app {
       return true;
     }
 
-    return this.login();
+    return this.loginPromise ? this.loginPromise : (this.loginPromise = this.login());
+  }
+
+  async request() {
+    const canNext = await this.afterLogin();
+
+    if (canNext) {
+      console.log('下一步');
+    } else {
+      console.log('取消操作');
+    }
   }
 }
