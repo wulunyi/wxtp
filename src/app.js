@@ -4,6 +4,7 @@ import 'promise-polyfill';
 import initGlobalData from './globaldata.js';
 import {judgeWxReq} from './service/request';
 import {judge} from '@jt/promise-operators';
+import {isString} from 'lodash';
 
 export default class extends wepy.app {
   config = {
@@ -48,25 +49,21 @@ export default class extends wepy.app {
     // 网络请求拦截器
     this.intercept('request', {
       config (p) {
-        return p;
-      },
+        const {session} = this.globalData;
+        const {needSession} = p.options;
+        delete p.options;
 
-      success (p) {
-        return p;
-      },
+        if (needSession) {
+          p.header['Authorization'] = session;
+        }
 
-      fail (p) {
-        return p;
-      },
-
-      complete (p) {
         return p;
       }
     });
   }
 
   onLaunch({path, query, scene}) {
-    // this.preLogin();
+    this.preLogin();
   }
 
   async checkSession() {
@@ -92,7 +89,8 @@ export default class extends wepy.app {
           return res.errMsg === 'login:ok';
         }));
 
-      await judgeWxReq('login', code);
+      const session = await judgeWxReq('login', code).then(judge(isString));
+      this.globalData.session = session;
 
       return true;
     } catch (error) {
@@ -140,13 +138,16 @@ export default class extends wepy.app {
     this.afterLogin();
   }
 
-  async request() {
+  async request(apiName, ...params) {
     const canNext = await this.afterLogin();
 
     if (canNext) {
-      console.log('下一步');
+      console.log('开始正式请求');
+
+      return judgeWxReq(apiName, ...params);
     } else {
       console.log('取消操作');
+      return 'login err';
     }
   }
 }

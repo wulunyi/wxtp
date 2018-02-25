@@ -22,8 +22,7 @@ export function isWxReqOk (res) {
 export function isReqOk(data) {
   return (
     _.isObject(data) &&
-    _.isObject(data.status) &&
-    _.isEqual(data.status.code, 0)
+    _.isEqual(data.code, 0)
   );
 }
 

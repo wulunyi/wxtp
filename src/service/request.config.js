@@ -10,6 +10,9 @@ export function login(code) {
     method: 'GET',
     data: {
       code
+    },
+    options: {
+      needSession: false
     }
   };
 }

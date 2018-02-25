@@ -23,14 +23,13 @@ export default class Index extends wepy.page {
   data = deepClone(initData);
 
   onLoad(params, data) {
-    authGet('getUserInfo', (err, userInfo) => {
-      debugger;
-
+    // getLocation
+    authGet('getUserInfo', (err, location) => {
       if (err) {
-        return console.log('获取联系人失败');
+        return console.log('获取定位失败');
       }
 
-      debugger;
+      console.log(location);
     });
   }
 }
