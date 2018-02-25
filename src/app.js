@@ -111,7 +111,8 @@ export default class extends wepy.app {
     try {
       const {confirm} = await wepy.showModal({
         title: '提示',
-        content: '登录异常是否重试'
+        content: '登录异常是否重试',
+        confirmText: '重试'
       }).then(judge(res => res.errMsg === 'showModal:ok'));
 
       if (confirm) {
