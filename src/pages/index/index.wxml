@@ -1,1 +1,4 @@
-<view>Index</view>
+<wxc-flex class="wrap" main="left" cross="center">
+  <view class="item"></view>
+  <view class="item"></view>
+</wxc-flex>

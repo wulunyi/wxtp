@@ -14,7 +14,7 @@ export default class extends wepy.app {
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#FF835A',
-      navigationBarTitleText: 'template',
+      navigationBarTitleText: '打车',
       navigationBarTextStyle: '#fff',
       backgroundColor: '#f4f4f4'
     }
@@ -66,7 +66,7 @@ export default class extends wepy.app {
   }
 
   onLaunch({path, query, scene}) {
-    this.request();
+    this.preLogin();
   }
 
   async checkSession() {
@@ -101,6 +101,7 @@ export default class extends wepy.app {
       return await this.loginConfirm();
     } finally {
       console.log('登录调用总次数', (++this.loginCount));
+
       // 清除登录 Promise 的引用
       this.loginPromise = null;
     }
@@ -132,6 +133,10 @@ export default class extends wepy.app {
     }
 
     return this.loginPromise ? this.loginPromise : (this.loginPromise = this.login());
+  }
+
+  preLogin() {
+    this.afterLogin();
   }
 
   async request() {
