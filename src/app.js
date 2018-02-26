@@ -5,6 +5,7 @@ import initGlobalData from './globaldata.js';
 import {judgeWxReq} from './service/request';
 import {judge} from '@jt/promise-operators';
 import {isString} from 'lodash';
+import report from './report/ald-stat';
 
 export default class extends wepy.app {
   config = {
