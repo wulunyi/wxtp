@@ -3,6 +3,9 @@ import deepClone from 'clone';
 import pageBaseMixin from '../../mixins/page-base-mixin.js';
 import initData from './data.js';
 import {authGet} from '@jt/wepy-authget';
+import QQMapWX from '../../mapsdk/qqmap-wx-jssdk';
+
+let qqmapsdk;
 
 export default class Index extends wepy.page {
   config = {
@@ -23,13 +26,37 @@ export default class Index extends wepy.page {
   data = deepClone(initData);
 
   onLoad(params, data) {
-    // getLocation
-    authGet('getUserInfo', (err, location) => {
+    qqmapsdk = new QQMapWX({
+      key: 'GTSBZ-QYLKU-PRBVV-B65XJ-OY3WK-SBBO5'
+    });
+
+    authGet('getLocation', (err, location) => {
       if (err) {
         return console.log('获取定位失败');
       }
 
+      const {latitude, longitude} = location;
+
+      this.updateData({
+        latitude, 
+        longitude
+      });
       console.log(location);
     });
+  }
+
+  onReady() {
+    qqmapsdk.search({
+      keyword: '酒店',
+      success: function (res) {
+        console.log(res);
+      },
+      fail: function (res) {
+        console.log(res);
+      },
+      complete: function (res) {
+        console.log(res);
+      }
+    })
   }
 }
