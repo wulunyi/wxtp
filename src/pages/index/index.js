@@ -38,7 +38,7 @@ export default class Index extends wepy.page {
       const {latitude, longitude} = location;
 
       this.updateData({
-        latitude, 
+        latitude,
         longitude
       });
       console.log(location);
@@ -57,6 +57,6 @@ export default class Index extends wepy.page {
       complete: function (res) {
         console.log(res);
       }
-    })
+    });
   }
 }
